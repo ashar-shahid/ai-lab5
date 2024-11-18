@@ -1,0 +1,41 @@
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
+data = {
+    'Gender': ['male', 'male', 'male', 'male', 'female', 'female', 'female', 'female'],
+    'Height': [6.00, 5.92, 5.58, 5.92, 5.00, 5.50, 5.42, 5.75],
+    'Weight': [180, 190, 170, 165, 100, 150, 130, 150],
+    'Foot_Size': [12, 11, 12, 10, 6, 8, 7, 9]
+}
+
+df = pd.DataFrame(data)
+
+features = df[['Height', 'Weight', 'Foot_Size']]
+labels = df['Gender']
+
+classifier = DecisionTreeClassifier()
+
+classifier.fit(features, labels)
+
+new_data = {
+    'Gender': ['male'],
+    'Height': [5.80],
+    'Weight': [175],
+    'Foot_Size': [10]
+}
+
+new_df = pd.DataFrame(new_data)
+
+df = pd.concat([df, new_df], ignore_index=True)
+
+features = df[['Height', 'Weight', 'Foot_Size']]
+labels = df['Gender']
+classifier.fit(features, labels)
+new_entry = pd.DataFrame([[5.80, 175, 10]], columns=['Height', 'Weight', 'Foot_Size'])
+prediction = classifier.predict(new_entry)
+
+print(f'Predicted Gender for the new entry: {prediction[0]}')
+
+predictions = classifier.predict(features)
+print(f'Confusion Matrix: \n{confusion_matrix(labels, predictions)}')
+print(f'Accuracy Score: {accuracy_score(labels, predictions)}')
