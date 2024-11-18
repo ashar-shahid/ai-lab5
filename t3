@@ -1,0 +1,39 @@
+import numpy as np
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+# Dataset (using numpy arrays)
+# Features: [Height, Weight, Foot_Size]
+# Labels: Gender (male or female)
+features = np.array([
+    [6.00, 180, 12],
+    [5.92, 190, 11],
+    [5.58, 170, 12],
+    [5.92, 165, 10],
+    [5.00, 100, 6],
+    [5.50, 150, 8],
+    [5.42, 130, 7],
+    [5.75, 150, 9]
+])
+
+# Labels corresponding to features (Gender: male=0, female=1)
+labels = np.array(['male', 'male', 'male', 'male', 'female', 'female', 'female', 'female'])
+
+# Initialize the classifier
+classifier = DecisionTreeClassifier()
+
+# Train the model
+classifier.fit(features, labels)
+
+# New entry to be predicted (Height=5.80, Weight=175, Foot_Size=10)
+new_entry = np.array([[5.80, 175, 10]])
+
+# Predict the class for the new entry
+prediction = classifier.predict(new_entry)
+
+print(f'Predicted Gender for the new entry: {prediction[0]}')
+
+# Evaluate the model performance with confusion matrix and accuracy
+predictions = classifier.predict(features)
+print(f'Confusion Matrix: \n{confusion_matrix(labels, predictions)}')
+print(f'Accuracy Score: {accuracy_score(labels, predictions)}')
