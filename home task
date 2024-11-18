@@ -1,0 +1,27 @@
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+df = pd.read_csv('dataset.csv', encoding='ISO-8859-1')
+
+print("Columns in the dataset:", df.columns)
+
+df.columns = df.columns.str.strip()
+
+features = df[['Goals', 'Caps']]  
+labels = df['Nation'] 
+
+classifier = DecisionTreeClassifier()
+
+classifier.fit(features, labels)
+
+new_entry = pd.DataFrame([[50, 200]], columns=['Goals', 'Caps'])
+
+prediction = classifier.predict(new_entry)
+
+print(f'Predicted Nation: {prediction[0]}')
+
+predictions = classifier.predict(features)
+print(f'Confusion Matrix: \n{confusion_matrix(labels, predictions)}')
+print(f'Accuracy Score: {accuracy_score(labels, predictions)}')
+
